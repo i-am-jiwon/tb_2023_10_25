@@ -79,6 +79,6 @@ class App {
         String idStr = cmd.replace("삭제?=","");
         int id =Integer.parseInt(idStr);
 
-        System.out.println(idStr);
+        System.out.println(idStr+"번 목록이 삭제되었습니다.");
     }
 }
