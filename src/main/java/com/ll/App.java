@@ -12,7 +12,7 @@ class App {
     Scanner scanner;
 
 
-    App(){
+    App() {
         scanner = new Scanner(System.in);
         lastQuotationId = 0;
         quotaitons = new ArrayList<>();
@@ -20,8 +20,6 @@ class App {
 
     void run() {
         System.out.println("=== 명언 앱 ===");
-
-
 
         while (true) {
             System.out.print("명령) ");
@@ -33,11 +31,11 @@ class App {
                 actionWrite();
             } else if (cmd.equals("목록")) {
                 actionList();
-            } else if(cmd.startsWith("삭제?")){
+            } else if (cmd.startsWith("삭제?")) {
                 actionRemove(cmd);
+            } else if (cmd.startsWith("수정?")) {
+                actionModify(cmd);
             }
-
-
         }
     }
 
@@ -75,10 +73,70 @@ class App {
         }
     }
 
-    void actionRemove(String cmd){
-        String idStr = cmd.replace("삭제?=","");
-        int id =Integer.parseInt(idStr);
+    void actionRemove(String cmd) {
+        String[] cmdBits = cmd.split("\\?", 2);
+        String action = cmdBits[0];
+        String queryString = cmdBits[1];
 
-        System.out.println(idStr+"번 목록이 삭제되었습니다.");
+        String[] queryStringBits = queryString.split("&");
+
+        int id = 0;
+
+        for (int i = 0; i < queryStringBits.length; i++) {
+            String queryParamStr = queryStringBits[i];
+
+            String[] queryParamStrBits = queryParamStr.split("=");
+
+            String paramName = queryParamStrBits[0];
+            String paramValue = queryParamStrBits[1];
+
+            if (paramName.equals("id")) {
+                id = Integer.parseInt(paramValue);
+            }
+        }
+
+        System.out.printf("%d번 명언을 삭제합니다.\n", id);
+
+
+    }
+
+    void actionModify(String cmd) {
+        int id = getParamAsInt(cmd, "id", 0);
+
+        if (id == 0) {
+            System.out.println("id를 입력해주세요.");
+            return;
+        }
+
+        System.out.printf("%d번 명언을 삭제합니다.\n", id);
+    }
+
+    int getParamAsInt(String cmd, String paramName, int defaultValue) {
+
+        String[] cmdBits = cmd.split("\\?", 2);
+        String queryString = cmdBits[1];
+
+        String[] queryStringBits = queryString.split("&");
+
+
+        for (int i = 0; i < queryStringBits.length; i++) {
+            String queryParamStr = queryStringBits[i];
+
+            String[] queryParamStrBits = queryParamStr.split("=");
+
+            String _paramName = queryParamStrBits[0];
+            String paramValue = queryParamStrBits[1];
+
+            if (_paramName.equals(paramName)) {
+                try {
+                    return Integer.parseInt(paramValue);
+                } catch (NumberFormatException e) {
+                    return defaultValue;
+                }
+            }
+        }
+
+        return defaultValue;
     }
 }
+
