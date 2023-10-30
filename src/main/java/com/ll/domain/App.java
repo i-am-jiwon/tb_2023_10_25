@@ -15,6 +15,24 @@ public class App {
         scanner = new Scanner(System.in);
         lastQuotationId = 0;
         quotaitons = new ArrayList<>();
+
+        initTestData();
+
+    }
+
+    void initTestData() {
+        for (int i = 0; i < 10; i++) {
+            lastQuotationId++;
+            int id = lastQuotationId;
+
+            String content = "명언" + id;
+            String authorName = "작가" + id;
+
+
+            Quotaiton quotaiton = new Quotaiton(id, content, authorName);
+
+            quotaitons.add(quotaiton);
+        }
     }
 
     public void run() {
