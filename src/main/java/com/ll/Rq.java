@@ -22,6 +22,11 @@ public class Rq {
 
         String[] cmdBits = cmd.split("\\?", 2);
         action = cmdBits[0].trim();
+
+        if (cmdBits.length == 1) {
+            return;
+        }
+
         queryString = cmdBits[1].trim();
 
         String[] queryStringBits = queryString.split("&");
@@ -45,10 +50,10 @@ public class Rq {
 
         String paramValue = paramsMap.get(paramName);
 
-        if(paramValue != null) {
-            try{
+        if (paramValue != null) {
+            try {
                 return Integer.parseInt(paramValue);
-            } catch ( NumberFormatException e){
+            } catch (NumberFormatException e) {
             }
         }
 
