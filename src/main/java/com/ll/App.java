@@ -1,6 +1,7 @@
 package com.ll;
 
 import java.sql.Array;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -25,6 +26,16 @@ class App {
             System.out.print("명령) ");
             String cmd = scanner.nextLine();
 
+            Rq rq = new Rq(cmd);
+
+
+
+            System.out.println(rq.getAction());
+            System.out.println(rq.getParamAsInt("id", 0));
+
+
+
+
             if (cmd.equals("종료")) {
                 break;
             } else if (cmd.equals("등록")) {
@@ -32,9 +43,9 @@ class App {
             } else if (cmd.equals("목록")) {
                 actionList();
             } else if (cmd.startsWith("삭제?")) {
-                actionRemove(cmd);
+                actionRemove(rq);
             } else if (cmd.startsWith("수정?")) {
-                actionModify(cmd);
+                actionModify(rq);
             }
         }
     }
@@ -73,70 +84,31 @@ class App {
         }
     }
 
-    void actionRemove(String cmd) {
-        String[] cmdBits = cmd.split("\\?", 2);
-        String action = cmdBits[0];
-        String queryString = cmdBits[1];
-
-        String[] queryStringBits = queryString.split("&");
-
-        int id = 0;
-
-        for (int i = 0; i < queryStringBits.length; i++) {
-            String queryParamStr = queryStringBits[i];
-
-            String[] queryParamStrBits = queryParamStr.split("=");
-
-            String paramName = queryParamStrBits[0];
-            String paramValue = queryParamStrBits[1];
-
-            if (paramName.equals("id")) {
-                id = Integer.parseInt(paramValue);
-            }
-        }
-
-        System.out.printf("%d번 명언을 삭제합니다.\n", id);
+    void actionRemove(Rq rq) {
 
 
-    }
-
-    void actionModify(String cmd) {
-        int id = getParamAsInt(cmd, "id", 0);
+        int id = rq.getParamAsInt("id", 0);
 
         if (id == 0) {
-            System.out.println("id를 입력해주세요.");
+            System.out.println("id를 정확히 입력해주세요.");
             return;
         }
 
         System.out.printf("%d번 명언을 삭제합니다.\n", id);
+
+
     }
 
-    int getParamAsInt(String cmd, String paramName, int defaultValue) {
+    void actionModify(Rq rq) {
+        int id = rq.getParamAsInt("id", 0);
 
-        String[] cmdBits = cmd.split("\\?", 2);
-        String queryString = cmdBits[1];
-
-        String[] queryStringBits = queryString.split("&");
-
-
-        for (int i = 0; i < queryStringBits.length; i++) {
-            String queryParamStr = queryStringBits[i];
-
-            String[] queryParamStrBits = queryParamStr.split("=");
-
-            String _paramName = queryParamStrBits[0];
-            String paramValue = queryParamStrBits[1];
-
-            if (_paramName.equals(paramName)) {
-                try {
-                    return Integer.parseInt(paramValue);
-                } catch (NumberFormatException e) {
-                    return defaultValue;
-                }
-            }
+        if (id == 0) {
+            System.out.println("id를 정확히 입력해주세요.");
+            return;
         }
 
-        return defaultValue;
+        System.out.printf("%d번 명언을 수정합니다.\n", id);
     }
+
 }
 
