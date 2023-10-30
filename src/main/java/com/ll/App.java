@@ -92,9 +92,29 @@ class App {
             return;
         }
 
+        int index = getIndexOfQuotaionById(id);
+
+        if (index == -1){
+            System.out.printf("%d번 명언은 존재하지 않습니다.\n", id);
+            return;
+        }
+
+        quotaitons.remove(index);
+
         System.out.printf("%d번 명언을 삭제합니다.\n", id);
 
 
+    }
+
+    int getIndexOfQuotaionById(int id) {
+        for (int i = 0; i < quotaitons.size(); i++){
+            Quotaiton quotaiton = quotaitons.get(i);
+
+            if (quotaiton.id == id){
+                return i;
+            }
+        }
+        return -1;
     }
 
     void actionModify(Rq rq) {
