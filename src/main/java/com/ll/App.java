@@ -29,23 +29,21 @@ class App {
             Rq rq = new Rq(cmd);
 
 
-
-            System.out.println(rq.getAction());
-            System.out.println(rq.getParamAsInt("id", 0));
-
-
-
-
-            if (cmd.equals("종료")) {
-                break;
-            } else if (cmd.equals("등록")) {
-                actionWrite();
-            } else if (cmd.equals("목록")) {
-                actionList();
-            } else if (cmd.startsWith("삭제?")) {
-                actionRemove(rq);
-            } else if (cmd.startsWith("수정?")) {
-                actionModify(rq);
+            switch (rq.getAction()) {
+                case "종료":
+                    return;
+                case "등록":
+                    actionWrite();
+                    break;
+                case "목록" :
+                    actionList();
+                    break;
+                case "삭제" :
+                    actionRemove(rq);
+                    break;
+                case "수정" :
+                    actionModify(rq);
+                    break;
             }
         }
     }
